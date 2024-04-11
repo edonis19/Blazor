@@ -1,0 +1,65 @@
+﻿@page "/edit-favorite-url/{favoriteId:int}"
+
+@inject CLOD.FavoriteUrl.Services.IUrlService Data
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h1 class="text-center mb-4">Modifica il tuo URL</h1>
+
+<div class="form-group">
+    <label for="urlInput">URL:</label>
+    <input class="form-control" @bind="url" id="urlInput" placeholder="Inserisci l'URL" />
+</div>
+
+<div class="form-group">
+    <label for="descriptionInput">Descrizione:</label>
+    <input class="form-control" @bind="description" id="descriptionInput" placeholder="Inserisci la descrizione" />
+</div>
+
+<br />
+
+<div class="d-flex justify-content-center">
+    <button class="btn btn-primary mr-2" @onclick="SaveChanges">Update</button>
+</div>
+
+@code {
+    private string url;
+    private string description;
+
+    [Parameter]
+    public int favoriteId { get; set; }
+
+    private CLOD.FavoriteUrl.Models.FavoriteUrl _favorite;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _favorite = await Data.GetFavoriteById(favoriteId);
+
+        // Verifica se il preferito è stato caricato correttamente
+        if (_favorite == null)
+        {
+        }
+        else
+        {
+            // Assegna i valori del preferito agli input
+            url = _favorite.Url;
+            description = _favorite.Description;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        // Crea un oggetto FavoriteUrl con i dati aggiornati
+        var updatedFavorite = new CLOD.FavoriteUrl.Models.FavoriteUrl
+            {
+                Id = favoriteId, // Utilizza l'ID ottenuto nell'evento OnInitializedAsync
+                Url = url,
+                Description = description
+            };
+
+        // Chiama il metodo UpdateUrl del servizio UrlService per salvare le modifiche
+        await Data.UpdateUrl(updatedFavorite);
+
+        // Naviga alla pagina principale dopo aver salvato le modifiche
+        NavigationManager.NavigateTo("/favorite-url");
+    }
+}

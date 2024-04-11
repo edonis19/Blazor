@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\DOTTOR\\CLOD.FavoriteUrl\\CLOD.FavoriteUrl\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\CLOD.FavoriteUrl.bundle.scp.css",
+      "PackagePath": "staticwebassets\\CLOD.FavoriteUrl.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\DOTTOR\\CLOD.FavoriteUrl\\CLOD.FavoriteUrl\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\DOTTOR\\CLOD.FavoriteUrl\\CLOD.FavoriteUrl\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\DOTTOR\\CLOD.FavoriteUrl\\CLOD.FavoriteUrl\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\DOTTOR\\CLOD.FavoriteUrl\\CLOD.FavoriteUrl\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CLOD.FavoriteUrl.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.CLOD.FavoriteUrl.props",
+      "PackagePath": "build\\CLOD.FavoriteUrl.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.CLOD.FavoriteUrl.props",
+      "PackagePath": "buildMultiTargeting\\CLOD.FavoriteUrl.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.CLOD.FavoriteUrl.props",
+      "PackagePath": "buildTransitive\\CLOD.FavoriteUrl.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

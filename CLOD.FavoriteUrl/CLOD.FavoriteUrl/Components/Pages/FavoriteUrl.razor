@@ -1,0 +1,130 @@
+﻿@page "/favorite-url"
+@inject CLOD.FavoriteUrl.Services.IUrlService UrlService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h1 class="text-center mb-4">Salva il tuo URL</h1>
+
+<div class="form-group">
+    <label for="urlInput">URL:</label>
+    <input class="form-control" @bind="url" id="urlInput" placeholder="Inserisci l'URL" />
+</div>
+
+<div class="form-group">
+    <label for="descriptionInput">Descrizione:</label>
+    <input class="form-control" @bind="description" id="descriptionInput" placeholder="Inserisci la descrizione" />
+</div>
+<br />
+<div class="d-flex justify-content-center">
+    <button class="btn btn-primary mr-2" @onclick="SaveFavorite">Salva</button>
+</div>
+
+<h2 class="text-center mt-4">I tuoi URL</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Descrizione</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var favorite in favorites)
+        {
+            <tr>
+                <td>@favorite.Url</td>
+                <td>@favorite.Description</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="(e => EditFavorite(favorite.Id))">Edit</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" @onclick="(e => ShowDeleteConfirmation(favorite.Id))">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (showDeleteConfirmation)
+{
+    <div class="modal" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Conferma Eliminazione</h5>
+                    <button type="button" class="close" @onclick="(() => CancelDelete())">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare questo URL preferito?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="(() => CancelDelete())">Annulla</button>
+                    <button type="button" class="btn btn-danger" @onclick="(() => ConfirmDelete())">Elimina</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string url;
+    private string description;
+    private List<CLOD.FavoriteUrl.Models.FavoriteUrl> favorites = new List<CLOD.FavoriteUrl.Models.FavoriteUrl>(); // Inizializza la lista
+    private bool showDeleteConfirmation = false;
+    private int deletingFavoriteId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carica tutti i preferiti dal servizio UrlService
+        favorites = await UrlService.GetAllFavorites();
+    }
+
+    private async Task SaveFavorite()
+    {
+        var favoriteUrl = new CLOD.FavoriteUrl.Models.FavoriteUrl
+            {
+                Url = url,
+                Description = description
+            };
+
+        await UrlService.InsertUrl(favoriteUrl);
+
+        url = "";
+        description = "";
+
+        // Aggiorna la lista dei preferiti dopo aver inserito un nuovo preferito
+        favorites = await UrlService.GetAllFavorites();
+    }
+
+    private void EditFavorite(int favoriteId)
+    {
+        // Naviga alla pagina di modifica con l'ID del preferito da modificare
+        NavigationManager.NavigateTo($"/edit-favorite-url/{favoriteId}");
+    }
+
+    private void ShowDeleteConfirmation(int favoriteId)
+    {
+        deletingFavoriteId = favoriteId;
+        showDeleteConfirmation = true;
+    }
+
+    private void CancelDelete()
+    {
+        showDeleteConfirmation = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        // Chiamare il servizio per eliminare l'URL preferito
+        await UrlService.DeleteFavorite(deletingFavoriteId);
+
+        // Aggiornare la lista dei preferiti dopo aver eliminato
+        favorites = await UrlService.GetAllFavorites();
+
+        // Nascondi il pannello di conferma
+        showDeleteConfirmation = false;
+    }
+}
